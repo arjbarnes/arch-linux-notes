@@ -97,7 +97,7 @@ vgscan
 vgchange -ay
 ```
 
-## Create the filesystems
+## Create filesystems for the installation
 ```
 # mkfs.fat -F32 /dev/sda1
 ```
@@ -124,4 +124,41 @@ mkfs.ext4 /dev/mapper/system-home
 ```
 # mount /dev/mapper/system-home /mnt/home
 ```
+
+## Install the system 
+```
+# pacstrap /mnt base base-devel linux-lts linux-lts-headers lvm2 vim
+```
+I have chosen to use the long-term support (LTS) linux kernel as it may be more stable.  Can use the latest stable linux kernel instead by replacing the 'linux-lts' and 'linux-lts-headers' packages with the 'linux' and 'linux-headers' packages - it will also be necessary to change some of the following commands to refer to 'linux' rther than 'linux-lts'. 
+
+The 'vim' package isn't strictly necessary.  However, it will be necessary to install a text editor in order to edit configuration files.  
+
+## Create an 'fstab' file
+The fstab file tells the installed operating system how the hard drive partitions should be mounted.  The followwing command will generate this by looking at how you have mounted the partitions in the earlier steps of the installation and put this informtion into fstab file:
+```
+# genfstab -p /mnt >> /mnt/etc/fstab
+```
+Can check what has been created using:
+```
+# cat /mnt/etc/fstab
+```
+
+## Launch into the new system (without restarting)
+```
+# arch-chroot /mnt
+```
+
+## Configure the system to use the correct keyboard mapping
+When the system is rebooted, the keyboard mapping that was specified earlier will be lost.  Can persistently specify the keyboard mapping using:
+```
+# vim /etc/vconsole.conf
+> KEYMAP=uk
+```
+Again, replace 'uk' with the appropriate keyboard mapping as identified earlier on in the installation.
+
+## Set the correct localisation for the system 
+
+## Specify the correct timezone for the system
+
+Set the time zone:
 
