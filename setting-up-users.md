@@ -23,6 +23,7 @@ Edit the sudo configuration using:
 EDITOR=vim visudo
 ```
 N.B. it is necessary to use the 'visudo' command to edit the configuration file for sudo (Which is /etc/sudoers).  Need to pass the EDITOR variable as visude uses 'vi' by default and we only have 'vim' installed.
+
 There are lots of ways to configure sudo - for me, I'll configure sudo so that any members of the 'wheel' group can run commands as root with sudo by entering their own password.  To do this, uncomment the following line:
 ```
 > %wheel ALL=(ALL) ALL
