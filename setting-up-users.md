@@ -1,4 +1,4 @@
-# Arch Linux Installation (User Account Setup)
+# Arch Linux Installation (Super User Account Setup)
 
 ## Create a new user account
 Create the user account using:
@@ -6,8 +6,9 @@ Create the user account using:
 # useradd -m -s /bin/bash <username>
 ```
 The -m flag creates a home directory for the user at /home/<username>.
-The -s flag specifes the default shell for the user (this must be one that is listed in /etc/shells).
-Can also specify groups that the user should belong to using the -G flag (e.g. -G <group1>, <group2>) 
+The -s flag specifes the default shell for the user (this must be one that is listed in /etc/shells). 
+Can also specify groups that the user should belong to using the -G flag (e.g. -G <group1>, <group2>).
+  
 Set the password for the new user:
 ```
 # passwd <username>
