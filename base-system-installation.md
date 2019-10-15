@@ -1,4 +1,4 @@
-# Arch Linux Installation
+# Arch Linux Installation (Basic System)
 
 ## Set an appropriate keyboard layout
 
