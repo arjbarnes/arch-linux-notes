@@ -157,8 +157,100 @@ When the system is rebooted, the keyboard mapping that was specified earlier wil
 Again, replace 'uk' with the appropriate keyboard mapping as identified earlier on in the installation.
 
 ## Set the correct localisation for the system 
+Specify the correct locale in /etc/locale.conf:
+```
+# vim /etc/locale.conf
+> LANG=en_GB.UTF-8
+```
+Uncomment the correct locale in /etc/locale.gen:
+```
+# vim /etc/locale.gen
+```
+Generate the localisation information:
+```
+# locale-gen
+```
 
 ## Specify the correct timezone for the system
+Set the timzone:
+```
+# ln -sf /usr/share/zoneinfo/Europe/London/ /etc/localtime
+```
+Generate /etc/adjtime
+```
+# hwclock --systohc
+```
 
-Set the time zone:
+## Install packages needed for networking
+Install the packages:
+```
+# pacman -S iputils networkmanager networkmanager-vpnc network-manager-applet wireless_tools wpa_supplicant dialog
+```
+Enable the NetworkManager service:
+```
+# systemctl enable NetworkManager
+```
 
+## Specify a hostname for the system
+```
+# vim /etc/hostname
+> <hostname>
+```
+```
+# vim /etc/hosts
+> 127.0.0.1 localhost
+> ::1 localhost
+> 127.0.1.1 <hostname>.<localdomain> <hostname>
+```
+
+## Set a root password
+```
+passwd
+```
+
+## Install and configure the bootloader
+```
+# bootctl --path=/boot/ install
+```
+```
+# vim /boot/loader/loader.conf
+> clear
+> default arch
+> timeout 3
+> editor no
+> auto-entries no
+```
+Setting editor to no prevents commands being entered in the bootloader screen and therefore improves security.
+```
+# vim /boot/loader/entries/arch.conf
+> title Arch Linux
+> linux /vmlinuz-linux-lts
+> initrd /initramfs-linux-lts.img
+> options cryptdevice=UUID=<XXXXXXXXXX>:lvm root=/dev/system/root rw quiet
+```
+N.B. need to insert the UUID of the disk partition with the LVM on it (/dev/sda2) in place of <XXXXXXXXXX> - a shortcut to insert this within vim is to use the following command:
+```
+: read ! blkid /dev/sda2
+```
+which will insert hte output from that command onto a line in the file, which can then be edited to remove everything other than the UUID.
+
+## Install and Configure the initial ram disk
+Configure additional hooks for 'encrypt' and 'lvm2' and re-order the hooks so that 'keyboard' and 'keymap' appear before 'encrypt':
+```
+vim /etc/mkinitcpio.conf
+HOOKS="[...] block keyboard keymap encrypt lvm2 filesystems [...]"
+```
+Keymap needs to be before encrypt in the list of hooks, otherwise a US keymap will be used for password entry.  Ensure that the correct locale and keymap are specified before generating the initial ram disk, otherwise the wrong keyboard layout will be used (which will make decrypting the lvm harder!).
+
+Generate the initial ram disk:
+```
+mkinitcpio -p linux-lts
+```
+
+## Reboot into the new system
+The basic system should now be installed, so can reboot into it using:
+```
+# exit
+# umount -R /mnt
+# reboot
+```
