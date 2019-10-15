@@ -52,12 +52,9 @@ user account has sudo accesss.  So first logout of the root account and login to
 ```
 # exit
 ```
-Lock the root account:
+Lock the root account and remove the root password:
 ```
-# passwd -l root
+# sudo passwd -ld root
 ```
-For good measure, remove the root password by replacing the encrypted password in /etc/shadow with a '!':
-```
-# vim /etc/shadow
-> root:!:12345::::::
-```
+The '-l' flag locks the root account (but leaves the password set).
+The '-d' flag removes the root password.
