@@ -79,22 +79,22 @@ Open the encrypted LVM partition using:
 # pvcreate /dev/mapper/lvm
 ```
 ```
-vgcreate system /dev/mapper/lvm
+# vgcreate system /dev/mapper/lvm
 ```
 ```
-lvcreate -L 30GB system -n root
+# lvcreate -L 30GB system -n root
 ```
 ```
-lvcreate -l 100%FREE system -n home
+# lvcreate -l 100%FREE system -n home
 ```
 ```
-modprobe dm_mod (is this necessary?)
+# modprobe dm_mod (is this necessary?)
 ```
 ```
-vgscan
+# vgscan
 ```
 ```
-vgchange -ay
+# vgchange -ay
 ```
 
 ## Create filesystems for the installation
@@ -102,10 +102,10 @@ vgchange -ay
 # mkfs.fat -F32 /dev/sda1
 ```
 ```
-mkfs.ext4 /dev/mapper/system-root
+# mkfs.ext4 /dev/mapper/system-root
 ```
 ```
-mkfs.ext4 /dev/mapper/system-home
+# mkfs.ext4 /dev/mapper/system-home
 ```
 
 ## Mount the filesystems
@@ -162,7 +162,7 @@ Specify the correct locale in /etc/locale.conf:
 # vim /etc/locale.conf
 > LANG=en_GB.UTF-8
 ```
-Uncomment the correct locale in /etc/locale.gen:
+Uncomment the correct locale in /etc/locale.gen (for me, this is 'en_GB.UTF-8 UTF-8':
 ```
 # vim /etc/locale.gen
 ```
@@ -208,6 +208,23 @@ Enable the NetworkManager service:
 passwd
 ```
 
+## Create a swap space
+I will create a swap space using a file rather than a hard drive partition as it is more flexible (can be more easily resized later on if needed).  Create the swap file using:
+```
+# fallocate -l 4G /swap
+# chmod 600 /swap
+# mkswap /swap
+```
+Now add the swap file to the /etc/fstab file so that it will be automatically mounted:
+```
+# echo '# swap file' >> /etc/fstab
+# echo '/swap none swap sw 0 0' >> /etc/fstab
+```
+Check the contents of the fstab file using:
+```
+# cat /etc/fstab
+```
+
 ## Install and configure the bootloader
 ```
 # bootctl --path=/boot/ install
@@ -223,7 +240,7 @@ passwd
 Setting editor to no prevents commands being entered in the bootloader screen and therefore improves security.
 ```
 # vim /boot/loader/entries/arch.conf
-> title Arch Linux
+> title Arch Linux (LTS)
 > linux /vmlinuz-linux-lts
 > initrd /initramfs-linux-lts.img
 > options cryptdevice=UUID=<XXXXXXXXXX>:lvm root=/dev/system/root rw quiet
@@ -235,16 +252,16 @@ N.B. need to insert the UUID of the disk partition with the LVM on it (/dev/sda2
 which will insert hte output from that command onto a line in the file, which can then be edited to remove everything other than the UUID.
 
 ## Install and Configure the initial ram disk
-Configure additional hooks for 'encrypt' and 'lvm2' and re-order the hooks so that 'keyboard' and 'keymap' appear before 'encrypt':
+Configure additional hooks for 'keymap', 'encrypt' and 'lvm2' and re-order the hooks so that 'keyboard' and 'keymap' appear before 'encrypt':
 ```
-vim /etc/mkinitcpio.conf
-HOOKS="[...] block keyboard keymap encrypt lvm2 filesystems [...]"
+# vim /etc/mkinitcpio.conf
+> HOOKS="[...] block keyboard keymap encrypt lvm2 filesystems [...]"
 ```
 Keymap needs to be before encrypt in the list of hooks, otherwise a US keymap will be used for password entry.  Ensure that the correct locale and keymap are specified before generating the initial ram disk, otherwise the wrong keyboard layout will be used (which will make decrypting the lvm harder!).
 
 Generate the initial ram disk:
 ```
-mkinitcpio -p linux-lts
+# mkinitcpio -p linux-lts
 ```
 
 ## Reboot into the new system
