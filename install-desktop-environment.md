@@ -35,7 +35,9 @@ sudo pacman -S virtualbox-guest-utils virtualbox-guest-modules-arch mesa mesa-li
 ```
 # sudo systemctl enable sddm
 ```
-
+```
+# sudo pacman -S plasma
+```
 ## Install some core applications
 ```
 sudo pacman -S konsole dolphin firefox kate
