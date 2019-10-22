@@ -6,7 +6,17 @@ Check what video card is present using:
 lspci
 ```
 
-For virtualbox:
+For Intel:
+```
+sudo pacman -S xf86-video-intel-libgl mesa
+```
+
+For NVidia:
+```
+sudo pacman -S nvidia-lts nvidia-libgl mesa
+```
+
+For VirtualBox:
 ```
 sudo pacman -S virtualbox-guest-utils virtualbox-guest-modules-arch mesa mesa-libgl
 ```
@@ -20,11 +30,13 @@ sudo pacman -S virtualbox-guest-utils virtualbox-guest-modules-arch mesa mesa-li
 
 ### KDE
 ```
-# sudo pacman -S sddm plasma-desktop
+# sudo pacman -S sddm 
 ```
 ```
-# echo "exec startkde" > ~/.xinitrc
+# sudo systemctl enable sddm
 ```
+
+## Install some core applications
 ```
 sudo pacman -S konsole dolphin firefox kate
 ```
