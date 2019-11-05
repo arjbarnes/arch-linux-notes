@@ -127,7 +127,7 @@ Open the encrypted LVM partition using:
 
 ## Install the system 
 ```
-# pacstrap /mnt base base-devel linux-lts linux-lts-headers lvm2 vim
+# pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware lvm2 vim
 ```
 I have chosen to use the long-term support (LTS) linux kernel as it may be more stable.  Can use the latest stable linux kernel instead by replacing the 'linux-lts' and 'linux-lts-headers' packages with the 'linux' and 'linux-headers' packages - it will also be necessary to change some of the following commands to refer to 'linux' rther than 'linux-lts'. 
 
