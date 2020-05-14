@@ -74,40 +74,43 @@ Encrypt the LVM partition using:
 ```
 # cryptsetup luksFormat /dev/sda2
 ```
+/dev/nvme0n1p2
+
 Open the encrypted LVM partition using:
 ```
 # cryptsetup open --type luks /dev/sda2 lvm
 ```
+/dev/nvme0n1p2 luks
+
 
 ## Setup the LVM and logical partitions
 ```
 # pvcreate /dev/mapper/lvm
 ```
+/luks
+
+
 ```
 # vgcreate system /dev/mapper/lvm
 ```
+<vgname> /dev/mapper/luks
+
 ```
 # lvcreate -L 30GB system -n root
 ```
 ```
 # lvcreate -l 100%FREE system -n home
 ```
-```
-# modprobe dm_mod (is this necessary?)
-```
-```
-# vgscan
-```
-```
-# vgchange -ay
-```
+
 
 ## Create filesystems for the installation
 ```
 # mkfs.fat -F32 /dev/sda1
 ```
+/dev/nvme0n1p1
+
 ```
-# mkfs.ext4 /dev/mapper/system-root
+# mkfs.ext4 /dev/mapper/system-rooth
 ```
 ```
 # mkfs.ext4 /dev/mapper/system-home
@@ -123,6 +126,7 @@ Open the encrypted LVM partition using:
 ```
 # mount /dev/sda1 /mnt/boot
 ```
+/dev/nvme0n1p1
 ```
 # mkdir /mnt/home
 ```
@@ -132,7 +136,7 @@ Open the encrypted LVM partition using:
 
 ## Install the system 
 ```
-# pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware intel-ucode lvm2 vim
+# pacstrap /mnt base base-devel linux linux-lts linux-headers linux-lts-headers linux-firmware intel-ucode lvm2 netctl wpa_supplicant dhcpcd dialog ppp vim
 ```
 I have chosen to use the long-term support (LTS) linux kernel as it may be more stable.  Can use the latest stable linux kernel instead by replacing the 'linux-lts' and 'linux-lts-headers' packages with the 'linux' and 'linux-headers' packages - it will also be necessary to change some of the following commands to refer to 'linux' rther than 'linux-lts'. 
 
@@ -186,16 +190,6 @@ Generate /etc/adjtime
 # hwclock --systohc
 ```
 
-## Install packages needed for networking
-Install the packages:
-```
-# pacman -S iputils networkmanager networkmanager-vpnc network-manager-applet wireless_tools wpa_supplicant dialog
-```
-Enable the NetworkManager service:
-```
-# systemctl enable NetworkManager
-```
-
 ## Specify a hostname for the system
 ```
 # vim /etc/hostname
@@ -216,7 +210,7 @@ passwd
 ## Create a swap space
 I will create a swap space using a file rather than a hard drive partition as it is more flexible (can be more easily resized later on if needed).  Create the swap file using:
 ```
-# fallocate -l 4G /swap
+# fallocate -l 8G /swap
 # chmod 600 /swap
 # mkswap /swap
 ```
@@ -238,7 +232,7 @@ Check the contents of the fstab file using:
 # vim /boot/loader/loader.conf
 > clear
 > default arch
-> timeout 3
+> timeout 2
 > editor no
 > auto-entries no
 ```
@@ -247,7 +241,7 @@ Setting editor to no prevents commands being entered in the bootloader screen an
 # vim /boot/loader/entries/arch.conf
 > title Arch Linux (LTS)
 > linux /vmlinuz-linux-lts
-> United /intel-ucode.img
+> initrd /intel-ucode.img
 > initrd /initramfs-linux-lts.img
 > options cryptdevice=UUID=<XXXXXXXXXX>:lvm root=/dev/system/root rw quiet
 ```
