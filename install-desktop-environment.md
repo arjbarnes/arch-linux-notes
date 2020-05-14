@@ -34,6 +34,10 @@ Pacman -S lightdm lightdm-gtk-greeter
 systemctl enable lightdm.service
 
 
+vim /etc/lightdm/lightdm.conf
+greeter-setup-script=/usr/bin/setxkbmap -layout uk
+
+
 ## Install Plymouth
 
 yay -S plymouth
