@@ -55,3 +55,13 @@ Lock the root account and remove the root password:
 ```
 The '-l' flag locks the root account (but leaves the password set).
 The '-d' flag removes the root password.
+
+
+# Setup Yay
+
+pacman -S git
+git clone https://aur.archlinux.org/yay-git.git
+cd yay-git
+makepkg -si
+cd ..
+rm -rf yay-git
