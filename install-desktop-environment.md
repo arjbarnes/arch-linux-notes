@@ -17,6 +17,9 @@ sudo pacman -S nvidia nvidia-libgl mesa
 # sudo pacman -S xorg xorg-server xorg-xinit 
 ```
 
+Configure keyboard layout 
+/etc/X11/xorg.conf.d/20-keyboard.conf 
+
 ## install mate
 
 Sudo pacman -S mate mate-extra
