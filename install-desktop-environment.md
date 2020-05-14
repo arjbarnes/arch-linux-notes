@@ -29,3 +29,14 @@ Install display manager and greeter
 Pacman -S lightdm lightdm-gtk-greeter
 
 systemctl enable lightdm.service
+
+
+## Install Plymouth
+
+
+
+
+
+## Install Firefox
+pacman -S Firefox
+
