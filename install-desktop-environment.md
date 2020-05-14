@@ -33,7 +33,17 @@ systemctl enable lightdm.service
 
 ## Install Plymouth
 
+yay -S plymouth
+sudo vim /etc/mkinitcpio.conf
+> add 'plymouth' into the HOOKS section after 'base' and 'udev'
+> replace 'encrypt' in the HOOKS section with 'plymouth-encrypt'
+> add 'i915' into the MODULES section
+sudo vim /boot/loader/entries/arch.conf
+> add 'splash' at the end of the 'options' entry
+mkinitcpio -p linux
 
+sudo systemctl disable lightdm.service
+sudo systemctl enable lightdm-plymouth.service
 
 
 
