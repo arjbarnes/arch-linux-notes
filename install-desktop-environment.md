@@ -52,6 +52,13 @@ network-manager-applet
 nm-applet
 systemctl enable NetworkManager
 
+## Firewall
+sudo pacman -S ufw
+sudo systemctl enable ufw
+sudo systemctl start ufw
+sudo ufw enable
+sudo ufw status verbose
+
 ## Audio
 pacman -S pulseaudio pulseaudio-alsa
 
