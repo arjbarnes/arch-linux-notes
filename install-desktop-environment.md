@@ -34,6 +34,7 @@ systemctl enable lightdm.service
 ## Install Plymouth
 
 yay -S plymouth
+sudo pacman -S ttf-dejavu
 sudo vim /etc/mkinitcpio.conf
 > add 'plymouth' into the HOOKS section after 'base' and 'udev'
 > replace 'encrypt' in the HOOKS section with 'plymouth-encrypt'
@@ -46,6 +47,10 @@ sudo systemctl disable lightdm.service
 sudo systemctl enable lightdm-plymouth.service
 
 
+networkmanager
+network-manager-applet
+nm-applet
+systemctl enable NetworkManager
 
 ## Install Firefox
 pacman -S Firefox
