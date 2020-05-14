@@ -14,7 +14,7 @@ sudo pacman -S nvidia nvidia-libgl mesa
 
 ## Install the X display server
 ```
-# sudo pacman -S xorg xorg-xinit
+# sudo pacman -S xorg xorg-server xorg-xinit 
 ```
 
 ## install mate
@@ -51,6 +51,9 @@ networkmanager
 network-manager-applet
 nm-applet
 systemctl enable NetworkManager
+
+## Audio
+pacman -S pulseaudio pulseaudio-alsa
 
 ## Syncthing
 sudo pacman -S syncnthing syncthing-gtk
