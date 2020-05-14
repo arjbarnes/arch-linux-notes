@@ -13,6 +13,9 @@ Load the appropriate layout (in my case this is 'uk') using:
 ```
 
 ## Verify that the boot mode is EFI:
+
+efivar -l
+
 ```
 # ls /sys/firmware/efi/efivars
 ```
@@ -39,7 +42,7 @@ Can check internet connectivity using:
 # timedatectl
 ```
 
-## Setuo hard drive partitions for the installation
+## Setup hard drive partitions for the installation
 Identify the correct hard drive using:
 ```
 # fdisk -l
@@ -48,6 +51,8 @@ Run the fdisk utility on the hard drive that you want to install to (probably /d
 ```
 # fdisk /dev/sda
 ```
+/dev/nvme0n1
+
 
 Set the disk to use a GUID partition table (GPT) using the 'g' command.
 
@@ -127,7 +132,7 @@ Open the encrypted LVM partition using:
 
 ## Install the system 
 ```
-# pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware lvm2 vim
+# pacstrap /mnt base base-devel linux-lts linux-lts-headers linux-firmware intel-ucode lvm2 vim
 ```
 I have chosen to use the long-term support (LTS) linux kernel as it may be more stable.  Can use the latest stable linux kernel instead by replacing the 'linux-lts' and 'linux-lts-headers' packages with the 'linux' and 'linux-headers' packages - it will also be necessary to change some of the following commands to refer to 'linux' rther than 'linux-lts'. 
 
@@ -242,6 +247,7 @@ Setting editor to no prevents commands being entered in the bootloader screen an
 # vim /boot/loader/entries/arch.conf
 > title Arch Linux (LTS)
 > linux /vmlinuz-linux-lts
+> United /intel-ucode.img
 > initrd /initramfs-linux-lts.img
 > options cryptdevice=UUID=<XXXXXXXXXX>:lvm root=/dev/system/root rw quiet
 ```
