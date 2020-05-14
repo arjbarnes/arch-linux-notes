@@ -46,12 +46,19 @@ mkinitcpio -p linux
 sudo systemctl disable lightdm.service
 sudo systemctl enable lightdm-plymouth.service
 
-
+## Networking
 networkmanager
 network-manager-applet
 nm-applet
 systemctl enable NetworkManager
 
-## Install Firefox
-pacman -S Firefox
+## Syncthing
+sudo pacman -S syncnthing syncthing-gtk
+yay -S syncthingtray
+systemctl --user enable syncthing.service
+systemctl --user start syncthing.service
+syncthingtray
 
+## Install Firefox
+pacman -S firefox
+pacman -S vlc audacious
