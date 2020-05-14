@@ -7,7 +7,7 @@ lspci | grep -e VGA -e 3D
 ```
 For NVidia
 ```
-sudo pacman -S nvidia-lts nvidia-libgl mesa
+sudo pacman -S nvidia nvidia-libgl mesa
 
 ```
 
@@ -19,4 +19,13 @@ sudo pacman -S nvidia-lts nvidia-libgl mesa
 
 ## install mate
 
-Sudo pacman -S m
+Sudo pacman -S mate mate-extra
+
+Yay -S mate-tweak
+
+
+Install display manager and greeter
+
+Pacman -S lighten lightdm-gtk-greeter
+
+systemctl enable lightdm.service
