@@ -26,6 +26,6 @@ Yay -S mate-tweak
 
 Install display manager and greeter
 
-Pacman -S lighten lightdm-gtk-greeter
+Pacman -S lightdm lightdm-gtk-greeter
 
 systemctl enable lightdm.service
