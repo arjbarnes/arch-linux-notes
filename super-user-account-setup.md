@@ -33,10 +33,6 @@ I'm also going to change the password prompt timeout so that it will stay visibl
 ```
 > Defaults passwd_timeout=0
 ```
-For fun, I'm also going to enable the insults feature which provides a humerous insult when a password is incorrectly entered by adding:
-```
-> Defaults insults
-```
 Next, add any users that should be able to run commands as root through sudo to the 'wheel' group:
 ```
 # usermod -aG wheel <username>
